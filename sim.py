@@ -1,6 +1,5 @@
 __author__ = 'Austin'
 
-from mdp import MDP
 import random
 
 class Sim(object):
@@ -8,6 +7,8 @@ class Sim(object):
         self.mdp = mdp
         # current state
         self.current = 0
+        # number of parking spots
+        self.n = (mdp.num_states - 1) / 8
 
     def get_actions(self):
         return self.mdp.num_actions
@@ -29,3 +30,17 @@ class Sim(object):
         # which of these should be returned?
         self.current = next_state
         return self.mdp.rewards[self.current]
+
+    def get_location(self):
+        """ Parking spot number, from 0 to n - 1
+        """
+
+
+    def is_occupied(self):
+        """ Is the spot we're at occupied?
+        """
+
+    def is_trial_over(self):
+        """ Have we parked? I.E. is current state the terminal state
+        """
+        return self.current == self.mdp.num_states
