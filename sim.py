@@ -21,7 +21,7 @@ class Sim(object):
         sum = 0
         next_state = -1
         # find the next state
-        for i in range(outcomes):
+        for i in range(len(outcomes)):
             if sum < p < sum + outcomes[i]:
                 next_state = i
                 break
@@ -31,16 +31,32 @@ class Sim(object):
         self.current = next_state
         return self.mdp.rewards[self.current]
 
+
+    # the below functions are domain knowledge of the MDP.
+    # should probably be in a subclass of Sim, but oh well.
+    def drive(self):
+        return 0
+
+    def park(self):
+        return 1
+
     def get_location(self):
-        """ Parking spot number, from 0 to n - 1
+        """ Parking spot number, from 1 to n
         """
+        if self.current < 4 * self.n:
+            # A side
+            return self.n - self.current / 4
+        else:
+            # B side
+            return (self.current - 4 * (self.n - 1)) / 4
 
 
     def is_occupied(self):
         """ Is the spot we're at occupied?
         """
+        return (self.current % 4 == 1) or (self.current % 4 == 2)
 
     def is_trial_over(self):
         """ Have we parked? I.E. is current state the terminal state
         """
-        return self.current == self.mdp.num_states
+        return self.current == self.mdp.num_states - 1
