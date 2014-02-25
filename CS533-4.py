@@ -47,6 +47,20 @@ def range_policy(sim, near, far):
     return rewards
 
 
+def ADP_RL(mdp, sim):
+    while not sim.is_trial_over():
+        # plan(mdp, discount, epsilon)
+        # take action according to explore/exploit: epsilon-greedy
+            # if epsilon
+                # random
+            # else
+                # greedy
+        # update model:
+            # reward[current] = reward we received on the action
+            # transition[action_taken][old_state][new_state] += epsilon
+            # somehow remove epsilon from all other transitions like transition[action_taken][old_state][s]
+
+
 def average(l):
     return sum(l) / float(len(l))
 
@@ -76,6 +90,23 @@ def part_ii_evaluation():
     print average(random_results_2)
     print average(safe_results_2)
     print average(range_results_2)
+
+
+def part_iii_evaluations():
+    # mdp = create_blank_mdp()
+    results = []
+
+    for n in range(10):
+        results.append([])
+        for i in range(1000):
+            #mdp = ADP_RL(mdp, Sim(MDP("parking_mdp_linear_rewards_n_10.txt")))
+        # policy = plan(mdp, reward_fn, discount, epsilon)
+        for i in range(1000):
+            # reward = run_policy(policy, Sim(MDP("parking_mdp_linear_rewards_n_10.txt")))
+            # results[n].append(reward)
+
+    for l in results:
+        print average(l)
 
 
 #part_ii_evaluation()
