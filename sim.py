@@ -9,6 +9,7 @@ class Sim(object):
         self.current = 0
         # number of parking spots
         self.n = (mdp.num_states - 1) / 8
+        self.time = 0
 
     def get_actions(self):
         return self.mdp.num_actions
@@ -29,6 +30,7 @@ class Sim(object):
 
         # which of these should be returned?
         self.current = next_state
+        self.time += 1
         return self.mdp.rewards[self.current]
 
 
