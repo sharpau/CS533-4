@@ -2,14 +2,31 @@ __author__ = 'Austin'
 
 import random
 
+
 class Sim(object):
     def __init__(self, mdp):
         self.mdp = mdp
-        # current state
-        self.current = 0
-        # number of parking spots
+        # number of parking spots in each row
         self.n = (mdp.num_states - 1) / 8
         self.time = 0
+        # current state
+        # randomly either B[1] or A[n]
+        if random.random() < 0.5:
+            # B[1]
+            if random.random() < (1.0 / 11.0):
+                # space is free
+                self.current = 4 * self.n
+            else:
+                # space is occupied
+                self.current = 4 * self.n + 1
+        else:
+            # A[n]
+            if random.random() < (1.0 / 3.0):
+                # space is free
+                self.current = 0
+            else:
+                # space is occupied
+                self.current = 1
 
     def get_actions(self):
         return self.mdp.num_actions
@@ -19,14 +36,14 @@ class Sim(object):
         outcomes = self.mdp.transitions[action][self.current]
         # random from 0 to 1
         p = random.random()
-        sum = 0
+        p_sum = 0
         next_state = -1
         # find the next state
         for i in range(len(outcomes)):
-            if sum < p < sum + outcomes[i]:
+            if p_sum < p < p_sum + outcomes[i]:
                 next_state = i
                 break
-            sum += outcomes[i]
+            p_sum += outcomes[i]
 
         # which of these should be returned?
         self.current = next_state

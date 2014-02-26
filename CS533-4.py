@@ -146,13 +146,13 @@ def part_iii_evaluations():
     mdp = MDP("blank_2_actions_81_states_mdp.txt")
     results = []
     # prior: assume each transition seen once
-    transition_count = [[[1 for _ in range(81)] for _ in range(81)] for _ in range(2)]
+    transition_count = [[[0.1 for _ in range(81)] for _ in range(81)] for _ in range(2)]
 
     for n in range(10):
         print "Big loop " + str(n)
         results.append([])
-        for i in range(50):
-            #print "Training iteration " + str(i)
+        for i in range(100):
+            print "Training iteration " + str(i)
             mdp, transition_count = adp_rl(mdp, Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), transition_count)
         value_fn, policy, iterations = plan(mdp, 0.99, 0.01)
         print "Value: " + str(value_fn)
@@ -161,6 +161,8 @@ def part_iii_evaluations():
             #print "Testing iteration " + str(i)
             reward = run_policy(Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), policy)
             results[n].append(reward)
+
+        print average(results[n])
 
     for l in results:
         print average(l)
