@@ -151,12 +151,13 @@ def part_iii_evaluations():
     for n in range(10):
         print "Big loop " + str(n)
         results.append([])
-        for i in range(100):
-            print "Training iteration " + str(i)
+        for i in range(1000):
+            #print "Training iteration " + str(i)
             mdp, transition_count = adp_rl(mdp, Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), transition_count)
         value_fn, policy, iterations = plan(mdp, 0.99, 0.01)
         print "Value: " + str(value_fn)
         print "Policy: " + str(policy)
+        print "Reward: " + str(mdp.rewards)
         for i in range(100):
             #print "Testing iteration " + str(i)
             reward = run_policy(Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), policy)
@@ -168,7 +169,7 @@ def part_iii_evaluations():
         print average(l)
 
 
-#part_ii_evaluation()
+#part_ii_evaluation() # need to redo, since random start now
 # -31.24, 3.031, 10.885, -36.865, -0.598, 7.027
 
 part_iii_evaluations()
