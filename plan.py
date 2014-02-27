@@ -35,16 +35,10 @@ def plan(mdp, discount, epsilon):
     """
     bellman_error = []
     bellman_error.append(max(mdp.rewards))
-    policy = []
+    policy = [0 for _ in range(mdp.num_states)]
     iterations = 0
     # initialize at iteration 0 with reward of each state
     value_function = mdp.rewards
-
-    # run once so as to not return empty stuff
-    new_values, policy = bellman_backup(mdp, value_function, discount)
-    bellman_error.append(max_norm(new_values, value_function))
-    value_function = new_values
-    iterations += 1
 
     while bellman_error[len(bellman_error) - 1] > epsilon:
         new_values, policy = bellman_backup(mdp, value_function, discount)
