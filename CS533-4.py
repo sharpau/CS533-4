@@ -59,9 +59,9 @@ def run_policy(sim, policy):
 
 def adp_rl(mdp, sim, transition_count):
     p_explore = 0.1
-    while not sim.is_trial_over():
+    while sim.time < 200:
         old_state = sim.current
-        val, policy, iterations = plan(mdp, 0.99, 0.01)
+        val, policy, iterations = plan(mdp, 0.95, 0.05)
         # take action according to explore/exploit: epsilon-greedy
             # if epsilon
                 # random
@@ -146,13 +146,14 @@ def part_iii_evaluation():
     mdp = MDP("blank_2_actions_81_states_mdp.txt")
     results = []
     # prior: assume each transition seen once
-    transition_count = [[[0.1 for _ in range(81)] for _ in range(81)] for _ in range(2)]
+    transition_count = [[[0.01 for _ in range(81)] for _ in range(81)] for _ in range(2)]
 
     for n in range(10):
         print "Big loop " + str(n)
         results.append([])
         for i in range(100):
-            print "Training iteration " + str(i)
+            if i % 10 == 0:
+                print "Training iteration " + str(i)
             mdp, transition_count = adp_rl(mdp, Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), transition_count)
         value_fn, policy, iterations = plan(mdp, 0.99, 0.01)
         print "Value: " + str(value_fn)
@@ -160,7 +161,8 @@ def part_iii_evaluation():
         print "Reward: " + str(mdp.rewards)
         print "Transitions: " + str(mdp.transitions)
         for i in range(100):
-            print "Testing iteration " + str(i)
+            if i % 10 == 0:
+                print "Testing iteration " + str(i)
             reward = run_policy(Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), policy)
             results[n].append(reward)
 
