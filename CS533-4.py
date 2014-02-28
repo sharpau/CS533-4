@@ -142,31 +142,28 @@ def part_ii_evaluation():
     print average(range_results_2)
 
 
-def part_iii_evaluation():
+def part_iii_evaluation(sim_filename):
+    print sim_filename
     mdp = MDP("blank_2_actions_81_states_mdp.txt")
     results = []
     # prior: assume each transition seen once
-    transition_count = [[[0.01 for _ in range(81)] for _ in range(81)] for _ in range(2)]
+    transition_count = [[[0.1 for _ in range(81)] for _ in range(81)] for _ in range(2)]
 
     for n in range(10):
         print "Big loop " + str(n)
         results.append([])
         for i in range(100):
-            if i % 10 == 0:
-                print "Training iteration " + str(i)
-            mdp, transition_count = adp_rl(mdp, Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), transition_count)
+            mdp, transition_count = adp_rl(mdp, Sim(MDP(sim_filename)), transition_count)
         value_fn, policy, iterations = plan(mdp, 0.99, 0.01)
         print "Value: " + str(value_fn)
         print "Policy: " + str(policy)
-        print "Reward: " + str(mdp.rewards)
-        print "Transitions: " + str(mdp.transitions)
+        #print "Reward: " + str(mdp.rewards)
+        #print "Transitions: " + str(mdp.transitions)
         for i in range(100):
-            if i % 10 == 0:
-                print "Testing iteration " + str(i)
-            reward = run_policy(Sim(MDP("parking_mdp_linear_rewards_n_10.txt")), policy)
+            reward = run_policy(Sim(MDP(sim_filename)), policy)
             results[n].append(reward)
 
-        print average(results[n])
+        print "Average reward of policy: " + str(average(results[n]))
 
     for l in results:
         print average(l)
@@ -180,4 +177,5 @@ def part_iii_evaluation():
 # -0.154
 # 8.024
 
-part_iii_evaluation()
+part_iii_evaluation("parking_mdp_linear_rewards_n_10.txt")
+part_iii_evaluation("parking_mdp_quad_rewards_n_10.txt")
